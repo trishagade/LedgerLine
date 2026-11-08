@@ -1,0 +1,10 @@
+.env
+.env.*
+!.env.example
+application-local.properties
+target/
+node_modules/
+dist/
+*.log
+
+frontend/src-old/
