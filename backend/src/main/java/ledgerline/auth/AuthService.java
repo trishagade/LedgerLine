@@ -1,3 +1,4 @@
+
 package ledgerline.auth;
 
 import ledgerline.audit.AuditAction;
@@ -29,10 +30,14 @@ public class AuthService {
     private final PasswordEncoder encoder;
     private final SessionService sessions;
     private final AuditService audit;
-    /** Used to spend the same time hashing when the username does not exist (stops user-guessing by timing). */
     private final String dummyHash;
 
-    public AuthService(UserRepository users, PasswordEncoder encoder, SessionService sessions, AuditService audit) {
+    public AuthService(
+            UserRepository users,
+            PasswordEncoder encoder,
+            SessionService sessions,
+            AuditService audit
+    ) {
         this.users = users;
         this.encoder = encoder;
         this.sessions = sessions;
@@ -40,57 +45,138 @@ public class AuthService {
         this.dummyHash = encoder.encode("not-a-real-password");
     }
 
-    /** Public registration always creates a CUSTOMER. Admins can never be created through the API. */
+    /** Public registration always creates a CUSTOMER. */
     @Transactional
-    public User register(String username, String password) {
-        String name = normalise(username);
-        if (users.findByUsername(name).isPresent()) {
-            throw new ApiException(HttpStatus.CONFLICT, "USERNAME_TAKEN", "Username is already taken");
+    public User register(
+            String email,
+            String fullName,
+            String mobileNumber,
+            String password
+    ) {
+        String normalizedEmail = normalise(email);
+
+        if (users.findByEmail(normalizedEmail).isPresent()
+                || users.findByUsername(normalizedEmail).isPresent()) {
+            throw new ApiException(
+                    HttpStatus.CONFLICT,
+                    "EMAIL_TAKEN",
+                    "Email address is already registered"
+            );
         }
-        User user = users.save(new User(name, encoder.encode(password), Role.CUSTOMER));
-        audit.record(AuditAction.REGISTER, AuditOutcome.SUCCESS, user.getId(), name, "USER", String.valueOf(user.getId()), null);
+
+        String name = fullName.trim();
+        String mobile = (mobileNumber == null || mobileNumber.isBlank())
+                ? null : mobileNumber.trim();
+
+        User user = users.save(new User(
+                normalizedEmail,
+                name,
+                mobile,
+                encoder.encode(password),
+                Role.CUSTOMER
+        ));
+
+        audit.record(
+                AuditAction.REGISTER,
+                AuditOutcome.SUCCESS,
+                user.getId(),
+                normalizedEmail,
+                "USER",
+                String.valueOf(user.getId()),
+                null
+        );
+
         return user;
     }
 
     /**
-     * noRollbackFor: when the login fails we still want the failed-attempt counter and the audit row saved.
-     * Every failure returns the same message so attackers learn nothing about which usernames exist.
+     * Supports email login for new customers and username login
+     * for existing accounts such as the admin.
      */
     @Transactional(noRollbackFor = ApiException.class)
     public LoginResult login(String username, String password) {
-        String name = normalise(username);
+        String identifier = normalise(username);
         Instant now = Instant.now();
-        User user = users.findByUsername(name).orElse(null);
+
+        User user = users.findByUsername(identifier)
+                .or(() -> users.findByEmail(identifier))
+                .orElse(null);
 
         if (user == null) {
             encoder.matches(password, dummyHash);
-            audit.record(AuditAction.LOGIN_FAILURE, AuditOutcome.FAILED, null, name, "USER", null, "Unknown username");
+            audit.record(
+                    AuditAction.LOGIN_FAILURE,
+                    AuditOutcome.FAILED,
+                    null,
+                    identifier,
+                    "USER",
+                    null,
+                    "Unknown username or email"
+            );
             throw invalid();
         }
+
         if (user.isLocked(now)) {
-            audit.record(AuditAction.LOGIN_FAILURE, AuditOutcome.DENIED, user.getId(), name, "USER",
-                    String.valueOf(user.getId()), "Account temporarily locked");
+            audit.record(
+                    AuditAction.LOGIN_FAILURE,
+                    AuditOutcome.DENIED,
+                    user.getId(),
+                    identifier,
+                    "USER",
+                    String.valueOf(user.getId()),
+                    "Account temporarily locked"
+            );
             throw invalid();
         }
+
         if (!encoder.matches(password, user.getPasswordHash())) {
             user.registerFailedLogin(MAX_FAILED_LOGINS, LOCK_DURATION, now);
-            audit.record(AuditAction.LOGIN_FAILURE, AuditOutcome.FAILED, user.getId(), name, "USER",
-                    String.valueOf(user.getId()), "Wrong password");
+
+            audit.record(
+                    AuditAction.LOGIN_FAILURE,
+                    AuditOutcome.FAILED,
+                    user.getId(),
+                    identifier,
+                    "USER",
+                    String.valueOf(user.getId()),
+                    "Wrong password"
+            );
+
             throw invalid();
         }
 
         user.resetFailedLogins();
+
         SessionService.IssuedSession session = sessions.create(user);
-        audit.record(AuditAction.LOGIN_SUCCESS, AuditOutcome.SUCCESS, user.getId(), name, "USER",
-                String.valueOf(user.getId()), null);
-        return new LoginResult(session.token(), session.expiresAt(), user);
+
+        audit.record(
+                AuditAction.LOGIN_SUCCESS,
+                AuditOutcome.SUCCESS,
+                user.getId(),
+                user.getUsername(),
+                "USER",
+                String.valueOf(user.getId()),
+                null
+        );
+
+        return new LoginResult(
+                session.token(),
+                session.expiresAt(),
+                user
+        );
     }
 
     private static ApiException invalid() {
-        return new ApiException(HttpStatus.UNAUTHORIZED, "INVALID_CREDENTIALS", "Invalid username or password");
+        return new ApiException(
+                HttpStatus.UNAUTHORIZED,
+                "INVALID_CREDENTIALS",
+                "Invalid username/email or password"
+        );
     }
 
-    private static String normalise(String username) {
-        return username == null ? "" : username.trim().toLowerCase(Locale.ROOT);
+    private static String normalise(String value) {
+        return value == null
+                ? ""
+                : value.trim().toLowerCase(Locale.ROOT);
     }
 }
