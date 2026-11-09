@@ -1,4 +1,21 @@
 
+/* =========================================
+   GLOBAL STYLES
+========================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, "Segoe UI", sans-serif;
+}
+
+/* =========================================
+   LANDING PAGE
+========================================= */
+
 .landing-page {
   min-height: 100vh;
   background: #081426;
@@ -77,7 +94,9 @@
   border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
-/* Authentication Card */
+/* =========================================
+   LOGIN / REGISTER CARD
+========================================= */
 
 .auth-section {
   width: 100%;
@@ -123,10 +142,10 @@
   display: block;
   width: 100%;
   min-width: 0;
-  height: 36px;
+  height: 40px;
   padding: 8px 12px;
   border: 1px solid #cbd5e1;
-  border-radius: 4px;
+  border-radius: 5px;
   background: #ffffff;
   color: #0f172a;
   font-size: 14px;
@@ -148,7 +167,7 @@
 .auth-section .card button {
   display: block;
   width: 100%;
-  min-height: 40px;
+  min-height: 42px;
   padding: 10px;
   background: #f1f5f9;
   border: 1px solid #cbd5e1;
@@ -190,7 +209,9 @@
   color: #64748b;
 }
 
-/* Footer */
+/* =========================================
+   LANDING FOOTER
+========================================= */
 
 .landing-footer {
   text-align: center;
@@ -200,9 +221,362 @@
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Responsive Layout */
+/* =========================================
+   CUSTOMER / ADMIN DASHBOARD
+========================================= */
 
-@media (max-width: 800px) {
+.container {
+  min-height: 100vh;
+  width: 100%;
+  padding: 28px 5%;
+  background: #f1f5f9;
+  color: #0f172a;
+  font-family: Inter, "Segoe UI", sans-serif;
+}
+
+/* Dashboard Header */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 18px;
+  padding: 20px 24px;
+  margin-bottom: 28px;
+  background: #081426;
+  color: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 5px 18px rgba(15, 23, 42, 0.12);
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: 25px;
+  letter-spacing: 0.5px;
+}
+
+.topbar nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.topbar .who {
+  color: #e2e8f0;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  background: #dbeafe;
+  color: #1d4ed8;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.topbar button {
+  padding: 10px 16px;
+  border: 1px solid #64748b;
+  border-radius: 7px;
+  background: #1e293b;
+  color: #ffffff;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.topbar button:hover {
+  background: #334155;
+}
+
+.topbar .tab.active {
+  background: #2563eb;
+  border-color: #2563eb;
+}
+
+/* Dashboard Main Layout */
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.8fr) minmax(0, 1.7fr);
+  align-items: start;
+  gap: 24px;
+  width: 100%;
+}
+
+/* Dashboard Cards */
+
+.container .card {
+  min-width: 0;
+  padding: 24px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
+}
+
+.container .card h2 {
+  margin: 0 0 20px;
+  color: #0f172a;
+  font-size: 21px;
+  overflow-wrap: anywhere;
+}
+
+.container .card h3 {
+  margin: 28px 0 14px;
+  color: #0f172a;
+  font-size: 17px;
+}
+
+/* Account List */
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0;
+  margin: 0 0 24px;
+  list-style: none;
+}
+
+.list li {
+  width: 100%;
+  margin: 0;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+  padding: 17px;
+  border: 1px solid #dbe3ef;
+  border-radius: 10px;
+  background: #f8fafc;
+  color: #0f172a;
+  text-align: left;
+  cursor: pointer;
+  overflow-wrap: anywhere;
+}
+
+.row strong {
+  color: #047857;
+  font-size: 19px;
+}
+
+.row:hover,
+.row.active {
+  border-color: #2563eb;
+  background: #eff6ff;
+}
+
+/* Dashboard Forms */
+
+.container .card form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 15px;
+  width: 100%;
+  margin-top: 18px;
+}
+
+.container .card label {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  width: 100%;
+  color: #334155;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.container .card input {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: 42px;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #0f172a;
+  font-size: 14px;
+}
+
+.container .card input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.container .card form > button {
+  width: 100%;
+  min-height: 42px;
+  padding: 11px 16px;
+  border: none;
+  border-radius: 7px;
+  background: #1d4ed8;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.container .card form > button:hover {
+  background: #1e40af;
+}
+
+.container .card button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Deposit / Withdraw / Transfer Tabs */
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.tabs .tab {
+  flex: 1;
+  min-width: 90px;
+  padding: 11px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  background: #f8fafc;
+  color: #334155;
+  font-weight: 600;
+  text-transform: capitalize;
+  cursor: pointer;
+}
+
+.tabs .tab.active {
+  border-color: #1d4ed8;
+  background: #1d4ed8;
+  color: #ffffff;
+}
+
+/* Balance */
+
+.balance {
+  padding: 16px;
+  border-radius: 9px;
+  background: #ecfdf5;
+  color: #065f46;
+  font-size: 15px;
+}
+
+.balance strong {
+  display: block;
+  margin-top: 7px;
+  font-size: 27px;
+}
+
+/* Success / Error Messages */
+
+.container .card .success,
+.container .card .error {
+  padding: 12px;
+  border-radius: 7px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.container .card .success {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.container .card .error {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.muted {
+  color: #64748b;
+  line-height: 1.6;
+}
+
+/* =========================================
+   LEDGER TABLE
+========================================= */
+
+.scroll {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 9px;
+}
+
+.scroll table {
+  width: 100%;
+  min-width: 680px;
+  border-collapse: collapse;
+  background: #ffffff;
+  font-size: 13px;
+}
+
+.scroll th {
+  padding: 13px 12px;
+  background: #eff6ff;
+  color: #1e3a8a;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.scroll td {
+  padding: 13px 12px;
+  border-top: 1px solid #e2e8f0;
+  color: #334155;
+  white-space: nowrap;
+}
+
+.scroll tbody tr:hover {
+  background: #f8fafc;
+}
+
+/* =========================================
+   ADMIN PANEL
+========================================= */
+
+.container button {
+  font-family: inherit;
+}
+
+.container input {
+  font-family: inherit;
+}
+
+/* =========================================
+   RESPONSIVE DESIGN
+========================================= */
+
+@media (max-width: 850px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .topbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .topbar nav {
+    width: 100%;
+  }
+
   .hero-section {
     grid-template-columns: 1fr;
     gap: 30px;
@@ -223,6 +597,27 @@
 }
 
 @media (max-width: 480px) {
+  .container {
+    padding: 14px;
+  }
+
+  .container .card {
+    padding: 17px;
+  }
+
+  .topbar {
+    padding: 18px;
+  }
+
+  .topbar h1 {
+    font-size: 22px;
+  }
+
+  .tabs .tab {
+    min-width: 75px;
+    font-size: 12px;
+  }
+
   .landing-header h1 {
     font-size: 23px;
   }
