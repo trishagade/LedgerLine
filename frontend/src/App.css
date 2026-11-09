@@ -5,6 +5,7 @@
   color: #ffffff;
   display: flex;
   flex-direction: column;
+  font-family: Inter, "Segoe UI", sans-serif;
 }
 
 .landing-header {
@@ -25,6 +26,8 @@
   color: #a9bbd1;
   font-size: 14px;
 }
+
+/* Hero Section */
 
 .hero-section {
   flex: 1;
@@ -74,17 +77,20 @@
   border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
-.auth-section {
-  background: #ffffff;
-  color: #17243a;
-  border-radius: 20px;
-  padding: 30px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
-  min-width: 0;
-  box-sizing: border-box;
-}
+/* Authentication Card */
 
-/* Authentication form layout */
+.auth-section {
+  width: 100%;
+  max-width: 420px;
+  justify-self: center;
+  background: #ffffff;
+  color: #0f172a;
+  border-radius: 16px;
+  padding: 36px;
+  box-sizing: border-box;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  font-family: Inter, "Segoe UI", sans-serif;
+}
 
 .auth-section .card {
   display: flex;
@@ -95,8 +101,10 @@
 }
 
 .auth-section .card h2 {
+  color: #0f172a;
+  font-size: 24px;
+  font-weight: 700;
   margin: 0 0 8px;
-  color: #17243a;
 }
 
 .auth-section .card label {
@@ -105,8 +113,9 @@
   align-items: stretch;
   gap: 7px;
   width: 100%;
-  color: #26364c;
-  font-weight: 600;
+  color: #1e293b;
+  font-size: 14px;
+  font-weight: 500;
   box-sizing: border-box;
 }
 
@@ -114,24 +123,74 @@
   display: block;
   width: 100%;
   min-width: 0;
+  height: 36px;
+  padding: 8px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  background: #ffffff;
+  color: #0f172a;
+  font-size: 14px;
   box-sizing: border-box;
+}
+
+.auth-section .card input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.12);
+}
+
+.auth-section .card input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px #e8f0fe inset;
+  -webkit-text-fill-color: #0f172a;
+  border: 1px solid #94a3b8;
 }
 
 .auth-section .card button {
   display: block;
   width: 100%;
+  min-height: 40px;
+  padding: 10px;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 5px;
+  color: #0f172a;
+  font-size: 14px;
+  font-weight: 600;
   box-sizing: border-box;
-  padding: 13px;
+  cursor: pointer;
+}
+
+.auth-section .card button:hover {
+  background: #e2e8f0;
+}
+
+.auth-section .card button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
 }
 
 .auth-section .card p {
   margin: 4px 0 0;
+  color: #334155;
+  font-size: 13px;
   text-align: center;
+}
+
+.auth-section .card p a {
+  color: #1d4ed8;
+  text-decoration: underline;
+  font-weight: 600;
 }
 
 .auth-section .card .error {
   color: #c62828;
 }
+
+.auth-section .card .muted {
+  color: #64748b;
+}
+
+/* Footer */
 
 .landing-footer {
   text-align: center;
@@ -140,6 +199,8 @@
   font-size: 13px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
+
+/* Responsive Layout */
 
 @media (max-width: 800px) {
   .hero-section {
@@ -153,7 +214,7 @@
   }
 
   .auth-section {
-    padding: 22px;
+    padding: 24px;
   }
 
   .landing-header {
@@ -176,5 +237,9 @@
 
   .hero-quote {
     font-size: 16px;
+  }
+
+  .auth-section {
+    padding: 22px;
   }
 }
