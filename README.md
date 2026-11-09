@@ -1,113 +1,164 @@
-# LedgerLine — Double-Entry Banking System
+# LedgerLine
 
-LedgerLine is a full-stack banking application built to demonstrate secure account management, money movement, double-entry bookkeeping, idempotent transactions, and audit logging.
+**A secure banking application with account management, financial transactions, and a double-entry ledger.**
 
-## Live Demo
+LedgerLine is a full-stack banking-style application built using Java Spring Boot and React. It supports customer accounts, deposits, withdrawals, transfers, transaction history, and audit logging.
+
+## Live Application
 
 - **Frontend:** https://ledgerline-frontend-ax4v.onrender.com
 - **Backend:** https://ledgerline-backend-863k.onrender.com
-- **GitHub Repository:** https://github.com/trishagade/LedgerLine
+
+The backend may take some time to wake up when using a free hosting instance.
 
 ## Features
 
-- User registration and login
-- Role-based access control for Customers and Admins
-- Create and manage customer accounts
-- Deposit and withdrawal operations
-- Transfer money between accounts
-- Double-entry ledger for recording transactions
-- Idempotency protection against duplicate transaction requests
-- Insufficient funds validation
-- Admin dashboard to view all accounts
-- Append-only audit log for tracking important actions
-- Password hashing and token-based authentication
+### Customer
+
+- Register with full name, email, password, and optional mobile number.
+- Log in using email or username.
+- Create accounts with automatically generated account numbers.
+- View personal accounts and balances.
+- Deposit and withdraw funds.
+- Transfer funds between accounts.
+- View account transaction history and ledger entries.
+
+### Administrator
+
+- Log in using an ADMIN account.
+- View all customer accounts.
+- View the audit log.
+
+### Security and Integrity
+
+- Spring Security authentication.
+- Role-based authorization for administrative endpoints.
+- Customer account ownership checks.
+- BCrypt password hashing.
+- Input validation for registration.
+- Insufficient-funds validation.
+- Idempotency handling for duplicate transaction requests.
+- Append-only audit logging for important events.
+- Double-entry ledger records for financial transactions.
 
 ## Technology Stack
 
-**Frontend**
-- React
-- Vite
-- JavaScript
-- CSS
+| Layer | Technology |
+|---|---|
+| Frontend | React, JavaScript, Vite |
+| Backend | Java 21, Spring Boot |
+| Security | Spring Security, BCrypt |
+| Database | PostgreSQL |
+| Build | Maven |
+| Hosting | Render |
+| Version Control | Git and GitHub |
 
-**Backend**
-- Java 21
-- Spring Boot
-- Spring Security
-- Maven
-
-**Database**
-- PostgreSQL
-
-**Deployment**
-- Render
-- Docker
-
-## Application Roles
-
-### Customer
-- Register and log in
-- Create accounts
-- Deposit and withdraw money
-- Transfer funds
-- View account balances and transaction history
-
-### Admin
-- View all accounts
-- Access the administrative dashboard
-- Review the audit log
-
-## Running Locally
-
-### Prerequisites
-- Java 21
-- Maven
-- Node.js and npm
-- PostgreSQL
-
-### Backend Setup
-
-1. Create a PostgreSQL database named `ledgerline_db`.
-2. Configure the required environment variables:
+## Application Architecture
 
 ```text
-DB_PASSWORD=your_database_password
-LEDGERLINE_ADMIN_USERNAME=your_admin_username
-LEDGERLINE_ADMIN_PASSWORD=your_admin_password
+React Frontend
+      |
+      | REST API / Bearer Authentication
+      |
+Spring Boot Backend
+      |
+      | JPA / Hibernate
+      |
+PostgreSQL Database
 ```
 
-3. Open the backend directory and run:
+## Local Setup
+
+### Prerequisites
+
+- Java 21
+- Node.js and npm
+- PostgreSQL
+- Git
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/trishagade/LedgerLine.git
+cd LedgerLine
+```
+
+### 2. Configure the backend
+
+Configure the required PostgreSQL connection settings using environment variables:
+
+- `SPRING_DATASOURCE_URL`
+- `DB_USERNAME`
+- `DB_PASSWORD`
+
+Navigate to the backend folder:
 
 ```bash
 cd backend
-mvn spring-boot:run
 ```
 
-### Frontend Setup
+Compile the application:
+
+```bash
+.\mvnw.cmd compile
+```
+
+Run the application:
+
+```bash
+.\mvnw.cmd spring-boot:run
+```
+
+### 3. Configure and run the frontend
 
 Open another terminal:
 
 ```bash
 cd frontend
 npm install
+```
+
+Create a `.env` file with the backend URL:
+
+```env
+VITE_API_BASE=http://localhost:8080
+```
+
+Start the frontend:
+
+```bash
 npm run dev
 ```
 
-Open the local frontend at `http://localhost:5173`.
+Open the local URL displayed by Vite in your browser.
 
-## Security and Reliability
+## Testing
 
-- Passwords are stored using BCrypt hashing.
-- Protected API endpoints require authentication.
-- Administrative endpoints enforce server-side role checks.
-- Idempotency keys help prevent duplicate processing of the same transaction request.
-- Audit records capture successful and failed activities.
-- Double-entry accounting maintains balanced transaction records.
+The following application workflows have been exercised:
 
-## Project Purpose
+- Customer registration and login.
+- Administrator login.
+- Account creation and automatic account numbering.
+- Deposits, withdrawals, and transfers.
+- Insufficient-funds rejection.
+- Ledger balance updates.
+- Audit event recording.
+- Duplicate idempotency request handling locally.
+- Customer account retrieval.
 
-This project was developed as part of the Snovasys Fresher Hiring Challenge to demonstrate full-stack development, secure money movement, transaction integrity, and deployment skills.
+Some additional security tests, including direct customer-to-admin API denial, remain pending.
 
----
+## Project Documentation
 
-**Note:** LedgerLine is an educational project and is not intended for handling real-world banking transactions.
+- `PROMPTS.md` — AI-assisted development and verification log.
+- `THREATS.md` — Threat model, mitigations, and security testing status.
+
+## Important
+
+Never commit database passwords, authentication secrets, API tokens, or other private environment values to GitHub. Configure secrets through environment variables.
+
+## Author
+
+**Trisha Gade**
+
+GitHub: https://github.com/trishagade
